@@ -3,6 +3,9 @@ const cors = require("cors");
 const express = require("express");
 const db = require("./shared/mongo");
 
+//routes imports
+const studentRoutes = require("./Routes/students.routes");
+
 const app = express();
 
 app.use(cors());
@@ -15,6 +18,8 @@ app.use(cors());
   app.get("/", (req, res) => {
     console.log("Server is running successfully");
   });
+
+  app.use("/students", studentRoutes);
 
   const port = process.env.PORT || 3001;
 
