@@ -18,12 +18,12 @@ router.post("/", async (req, res) => {
   const { value, error } = studentSchema.validate(req.body);
   if (error) return res.status(400).send({ Error: error.details[0].message });
   let data;
-  if (value.mentorId === "unassigned") {
+  if (value.mentor === "unassigned") {
     data = await db.students.insertOne(value);
   } else {
     data = await db.students.insertOne({
       ...value,
-      mentorId: ObjectId(value.mentorId),
+      mentor: ObjectId(value.mentor),
     });
   }
   res.send(value);
@@ -35,7 +35,7 @@ router.put("/assignMentor", async (req, res) => {
 
   let data = await db.students.updateMany(
     { name: { $in: req.body.names } },
-    { $set: { mentorId: ObjectId(req.body.mentorId) } }
+    { $set: { mentor: ObjectId(req.body.mentor) } }
   );
   res.status(201).send("updated");
 });
@@ -46,17 +46,17 @@ router.put("/:_id", async (req, res) => {
   console.log(id, req.body); // its mentor id
   let data = await db.students.findOneAndUpdate(
     { _id: ObjectId(id) },
-    { $set: { mentorId: ObjectId(req.body.mentorId) } },
+    { $set: { mentor: ObjectId(req.body.mentor) } },
     { returnNewDocument: true }
   );
   res.send(data);
 });
 
 //show all students for a particular mentor
-router.get("/getMentor/:mentorId", async (req, res) => {
-  let id = req.params.mentorId;
+router.get("/getMentor/:mentor", async (req, res) => {
+  let id = req.params.mentor;
   console.log(id);
-  let data = await db.students.find({ mentorId: ObjectId(id) }).toArray();
+  let data = await db.students.find({ mentor: ObjectId(id) }).toArray();
   res.send(data);
 });
 
