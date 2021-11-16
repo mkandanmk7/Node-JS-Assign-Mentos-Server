@@ -6,15 +6,22 @@ const { ObjectId } = require("mongodb");
 
 const { studentSchema } = require("../shared/schema");
 
+//list students
+router.get("/", async (req, res) => {
+  let data = await db.students.find().toArray();
+  console.log(data);
+  res.send(data);
+});
+
 //create new student
 router.post("/", async (req, res) => {
   const { value, error } = studentSchema.validate(req.body);
   if (error) return res.status(400).send({ Error: error.details[0].message });
   let data;
   if (value.mentorId === "unassigned") {
-    data = await db.students.insert(value);
+    data = await db.students.insertOne(value);
   } else {
-    data = await db.students.insert({
+    data = await db.students.insertOne({
       ...value,
       mentorId: ObjectId(value.mentorId),
     });
