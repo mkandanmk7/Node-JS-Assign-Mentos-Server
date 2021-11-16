@@ -40,4 +40,16 @@ router.put("/assignMentor", async (req, res) => {
   res.status(201).send("updated");
 });
 
+//change mentor for a particular student
+router.put("/:_id", async (req, res) => {
+  let id = req.params._id; //its student id
+  console.log(id, req.body); // its mentor id
+  let data = await db.students.findOneAndUpdate(
+    { _id: ObjectId(id) },
+    { $set: { mentorId: ObjectId(req.body.mentorId) } },
+    { returnNewDocument: true }
+  );
+  res.send(data);
+});
+
 module.exports = router;
