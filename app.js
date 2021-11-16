@@ -9,9 +9,8 @@ const mentorRoutes = require("./Routes/mentors.routes");
 
 const app = express();
 
-app.use(cors());
-
 (async () => {
+  app.use(cors());
   await db.connect();
 
   app.use(express.json());
