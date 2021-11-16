@@ -52,4 +52,12 @@ router.put("/:_id", async (req, res) => {
   res.send(data);
 });
 
+//show all students for a particular mentor
+router.get("/getMentor/:mentorId", async (req, res) => {
+  let id = req.params.mentorId;
+  console.log(id);
+  let data = await db.students.find({ mentorId: ObjectId(id) }).toArray();
+  res.send(data);
+});
+
 module.exports = router;
