@@ -10,7 +10,7 @@ const schema = {
     name: joi.string().required(),
     email: joi.string().required(),
     batch: joi.string().required(),
-    mentorId: joi.string(),
+    mentorId: joi.string().default("unassigned"),
   }),
 };
 module.exports = schema;
